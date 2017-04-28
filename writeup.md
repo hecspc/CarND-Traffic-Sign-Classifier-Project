@@ -91,20 +91,26 @@ The results for these values were:
  * Test Accuracy: 95.6%
 
 
- Here is a graph representing the valid accuraccy in the different epochs
-
- ![accuracy](./writeup_images/valid_accuracy.png)
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ?
-* test set accuracy of ?
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
+At first, I chose as a base model the standard LeNet model and  grayscale and normalization as preprocessing. But I realized the validation accuracy never went above 82%. Then I augmented the hidden layer and fully connected features since we have more classes and also our images are much more detailed. Thi gave us an accuracy around 92% or 93%. To improve the accuracy I tried different initial learning rates but since the Adam optimizer regulates automatically the learning rate, I just had to adjust the initial learning rate magnitude which was 0.001 to avoid underfitting and overfitting. I also tried to improve the preprocessing including the histogram equalization which I think it improved a lot with some dark or less detailed images in the training set.
+
+
+At the beginning I tried to use 10 epochs but, although the accuracy was improvement, it did not to reach a plateau. Augmenting the number of epochs to 30, showed to the model was reaching a plateau as shown in the next image.
+
+ ![accuracy](./writeup_images/valid_accuracy.png)
+
+ Training dataset is also shuffled in each epoch and fed to the model in batches of 128 to reduce memory.
+
+With all these modification to the LeNet model, I achieved the next results:
+
+* Validation Accuracy: 96.9%
+* Test Accuracy: 95.6%
+
+
+
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
 * Which parameters were tuned? How were they adjusted and why?
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
@@ -152,24 +158,24 @@ As we can see, the model predicted successfully the dark images and the blurred 
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 18th cell of the Ipython notebook.
 
-| Sign class | 1st | 2nd | 3rd |
-|:----:|:----:|:----:|:----:|:----:|
-| 0  | **0** - (0.609668732)  | **4** - (0.389714181) | **1** (0.0006170)|
-| 1  | **1** - (0.999938369)  | **5** - (0.000058913) | **6** (0.0000028)|
-| 14 | **14** - (0.996541321) | **38** - (0.00255111) | **17** (0.0008238)|
-| 14 | **14** - (0.99904752) | **15** - (0.00007329) | **33** (0.0000142)|
-| 17 | **17** - (1.00000000) | **14** - (0.0000) | **9** (0.0000)|
-| 18 | **18** - (1.00000000) | **11** - (0.0000) | **27** (0.0000)|
-| 22 | **22** - (0.94420230) | **29** - (0.0039376) | **25** (0.001641)|
-| 25 | **25** - (0.816810727) | **30** - (0.087566) | **22** (0.052778)|
-| 27 | **18** - (0.671958506) | **27** - (0.327585) | **11** (0.0004564)|
-| 28 | **28** - (1.00000000) | **29** - (0.0000) | **30** (0.0000)|
-| 3  | **3** - (0.999999642)  | **18** - (0.00000019) | **2** (0.00000017)|
-| 32 | **32** - (0.977564394) | **15** - (0.0218184) | **18** (0.0004681)|
-| 4  | **4** - (0.993028939)  | **1** - (0.00697111) | **15** (0.00000003)|
-| 40 | **15** - (0.956800878) | **12** - (0.0418255) | **5** (0.0007247)|
+| Sign class | 1st | 2nd | 3rd | 4th | 5th |
+|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
+| 0  | **0** (0.609668732)  | **4** (0.389714181) | **1** (0.0006170)|**6** (8.31383e-08)|**2** (2.38878e-10)|
+| 1  | **1** (0.999938369)  | **5** (0.000058913) | **6** (0.0000028)|**0** (4.15902e-07)|**7** (1.40417e-07)|
+| 14 | **14** (0.996541321) | **38** (0.00255111) | **17** (0.0008238)|**15** (3.8677e-05)|**12** (2.1221e-05)|
+| 14 | **14** (0.99904752) | **15** (0.00007329) | **33** (0.0000142)|**12** (4.78139e-06)|**38** (1.558e-06)|
+| 17 | **17** (1.00000000) | **14** (3.74177e-12) | **9** (2.41303e-12)|**33** (2.16362e-15)|**12** (8.4449e-17)|
+| 18 | **18** (1.00000000) | **11** (7.5494e-10) | **27** (6.00362e-11)|**26** (1.5147e-13)|**37** (2.505e-14)|
+| 22 | **22** (0.94420230) | **29** (0.0039376) | **25** (0.001641)|**28** (9.48034e-07)|**18** (1.61862e-07)|
+| 25 | **25** (0.816810727) | **30** (0.087566) | **22** (0.052778)|**23** (0.030111)|**29** (0.008577)|
+| 27 | **18** (0.671958506) | **27** (0.327585) | **11** (0.0004564)|**28** (1.6206e-08)|**20** (2.46956e-09)|
+| 28 | **28** (1.00000000) | **29** (0.0000) | **30** (0.0000)|**20** (4.316e-10)|**18** (3.273e-10)|
+| 3  | **3** (0.999999642)  | **18** (0.00000019) | **2** (0.00000017)|**11** (6.41292e-10)|**5** (1.3481e-10)|
+| 32 | **32** (0.977564394) | **15** (0.0218184) | **18** (0.0004681)|**36** (9.5795e-05)|**6** (4.0857e-05)|
+| 4  | **4** (0.993028939)  | **1** (0.00697111) | **15** (0.00000003)|**26** (1.9046e-08)|**8** (3.0943e-09)|
+| 40 | **15** (0.956800878) | **12** (0.0418255) | **5** (0.0007247)|**40** (4.7829e-04)|**06** (9.189e-05)|
 
 We can observe that most of the predictions show a high confidence with more than a 90% for the first option. Even there are 3 images with a probability of 1.  For the sign with class 0 with a 60% where the second option is the sign 4 (Speed limit 70 km/h). Taking a look at the image is easy to see these similarities between both traffic signs.
 
